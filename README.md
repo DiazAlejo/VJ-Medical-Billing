@@ -18,62 +18,54 @@ You can receive form submissions in **two ways**:
 
 ### Option 1: Email Notifications (Recommended - Instant Alerts!)
 
-When someone submits the contact form, you'll receive an email notification immediately. Here's how to set it up:
+When someone submits the contact form, you'll receive an email notification immediately. We use **Web3Forms** - it's completely free, requires no signup, and works instantly!
 
-#### Step 1: Create a Resend Account (Free)
-1. Go to [https://resend.com](https://resend.com) and sign up for a free account
-2. Verify your email address
+#### Step 1: Get Your Free Access Key
 
-#### Step 2: Get Your API Key
-1. Once logged in, go to **API Keys** in the left sidebar
-2. Click **"Create API Key"**
-3. Give it a name like "VJ Medical Billing Website"
-4. Copy your API key (you'll only see it once!)
+1. Go to [https://web3forms.com](https://web3forms.com)
+2. Enter your email address (where you want to receive notifications)
+3. Click **"Get Your Access Key"**
+4. Copy your access key (it will look like: `12345678-1234-1234-1234-123456789012`)
 
-#### Step 3: Set Up Environment Variables
+**That's it!** No signup, no credit card, no domain verification needed.
 
-**Option A: Quick Setup (For Testing)**
+#### Step 2: Set Up Environment Variables
 
-If you just want to test email notifications, you can send emails to your Resend account email (the one you signed up with). Add these to your `.env.local` file:
+Add these to your `.env.local` file (for local development):
 
 ```env
-RESEND_API_KEY=re_your_api_key_here
-RESEND_VERIFIED_EMAIL=alejandro.diaz.sms@gmail.com
-CONTACT_FORM_RECIPIENT_EMAIL=alejandro.diaz.sms@gmail.com
+WEB3FORMS_ACCESS_KEY=your_access_key_here
+CONTACT_FORM_RECIPIENT_EMAIL=your-email@example.com
 ```
 
-Replace `alejandro.diaz.sms@gmail.com` with the email address you used to sign up for Resend.
+Replace:
+- `your_access_key_here` with the access key from Step 1
+- `your-email@example.com` with the email where you want to receive notifications
 
-**Option B: Production Setup (Recommended - Send to Any Email)**
+#### Step 3: Add to Netlify/Vercel (If Deployed)
 
-To send emails to any recipient (like your business email), you need to verify a domain in Resend:
+If your site is hosted on Netlify or Vercel:
 
-1. **Verify Your Domain**:
-   - Go to [Resend Domains](https://resend.com/domains)
-   - Click **"Add Domain"**
-   - Enter your domain name (e.g., `yourdomain.com`)
-   - Add the DNS records that Resend provides to your domain's DNS settings
-   - Wait for verification (usually takes a few minutes)
+1. Go to your site's **Settings** → **Environment Variables**
+2. Add both variables:
+   - `WEB3FORMS_ACCESS_KEY` = your access key
+   - `CONTACT_FORM_RECIPIENT_EMAIL` = your email address
+3. Redeploy your site
 
-2. **Set Environment Variables**:
-```env
-RESEND_API_KEY=re_your_api_key_here
-RESEND_VERIFIED_DOMAIN=yourdomain.com
-CONTACT_FORM_RECIPIENT_EMAIL=your-business-email@yourdomain.com
-```
+#### Step 4: Test It!
 
-**Important**: 
-- Replace `yourdomain.com` with your verified domain (without `www` or `http://`)
-- Replace `your-business-email@yourdomain.com` with the email where you want to receive notifications
-- If you're hosting on Vercel/Netlify, add these environment variables in your project settings
+Submit a test form on your website - you should receive an email within seconds!
 
-#### Step 4: Deploy or Restart Your Server
-- If you're running locally: Restart your development server
-- If you're hosted: Redeploy your application
+**🎉 That's it!** No API keys, no domain verification, no DNS records - just enter your email and get started instantly.
 
-That's it! You'll now receive email notifications every time someone submits the contact form.
-
-**Note**: Without domain verification, Resend only allows sending to your verified account email. For production, we recommend verifying a domain so you can send to any email address.
+**Benefits of Web3Forms:**
+- ✅ 100% Free forever
+- ✅ No signup required
+- ✅ No API keys needed
+- ✅ No domain verification
+- ✅ Works instantly
+- ✅ Reliable email delivery
+- ✅ Free tier: 250 submissions/month (plenty for most sites!)
 
 ### Option 2: View Leads in Supabase Database
 
@@ -130,6 +122,78 @@ If you experience any issues with your website:
 
 ### Language Toggle
 Visitors can switch between English and Spanish using the language button in the header.
+
+## 🚀 Deploying to Netlify
+
+### Step 1: Push Your Code to GitHub
+
+1. If you haven't already, initialize a git repository:
+   ```bash
+   git init
+   git add .
+   git commit -m "Initial commit"
+   ```
+
+2. Create a new repository on GitHub and push your code:
+   ```bash
+   git remote add origin https://github.com/yourusername/your-repo-name.git
+   git branch -M main
+   git push -u origin main
+   ```
+
+### Step 2: Connect to Netlify
+
+1. Go to [https://app.netlify.com](https://app.netlify.com) and sign up/login
+2. Click **"Add new site"** → **"Import an existing project"**
+3. Choose **"GitHub"** and authorize Netlify to access your repositories
+4. Select your repository from the list
+5. Netlify will auto-detect your Next.js project settings
+
+### Step 3: Configure Build Settings
+
+Netlify should auto-detect these settings from your `netlify.toml`:
+- **Build command:** `npm run build`
+- **Publish directory:** (handled automatically by Next.js plugin)
+- **Node version:** `20`
+
+Verify these settings match in the Netlify UI under **Site settings** → **Build & deploy**.
+
+### Step 4: Set Environment Variables
+
+Go to **Site settings** → **Environment variables** and add the following:
+
+**Required:**
+```
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
+```
+
+**Optional (for email notifications):**
+```
+WEB3FORMS_ACCESS_KEY=your_access_key_here
+CONTACT_FORM_RECIPIENT_EMAIL=recipient@example.com
+```
+
+To get your free Web3Forms access key, visit [https://web3forms.com](https://web3forms.com) - no signup required!
+
+### Step 5: Deploy
+
+1. Click **"Deploy site"** 
+2. Netlify will build and deploy your site automatically
+3. Once deployed, you'll get a URL like: `https://your-site-name.netlify.app`
+4. You can add a custom domain in **Site settings** → **Domain management**
+
+### Step 6: Enable Continuous Deployment
+
+Every time you push to your main branch, Netlify will automatically rebuild and deploy your site.
+
+### Troubleshooting
+
+- **Build fails?** Check the build logs in Netlify dashboard
+- **API routes not working?** Make sure all environment variables are set correctly
+- **404 errors?** Verify your `netlify.toml` configuration is correct
+- **Environment variables not working?** Make sure they're set in Netlify UI, not just `.env.local`
 
 ## 🚀 Website Status
 
