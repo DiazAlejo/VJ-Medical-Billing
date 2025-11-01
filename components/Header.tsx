@@ -9,18 +9,30 @@ export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId)
-    if (element) {
-      const headerHeight = 80 // Account for fixed header height
-      const elementPosition = element.getBoundingClientRect().top + window.pageYOffset
-      const offsetPosition = elementPosition - headerHeight
+    // Use requestAnimationFrame + timeout to ensure DOM has fully updated after language changes
+    // This is important because section heights differ between languages
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        // Small delay to ensure layout has fully recalculated after language changes
+        setTimeout(() => {
+          const element = document.getElementById(sectionId)
+          if (element) {
+            // Force a reflow to ensure accurate positioning
+            element.offsetHeight
+            
+            const headerHeight = 80 // Account for fixed header height
+            const elementPosition = element.getBoundingClientRect().top + window.pageYOffset
+            const offsetPosition = elementPosition - headerHeight
 
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
+            window.scrollTo({
+              top: offsetPosition,
+              behavior: 'smooth'
+            })
+            setIsMenuOpen(false)
+          }
+        }, 50) // Small delay to allow layout recalculation after language/content changes
       })
-      setIsMenuOpen(false)
-    }
+    })
   }
 
   return (
