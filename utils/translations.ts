@@ -97,7 +97,7 @@ export const translations: { en: Translations; es: Translations } = {
     // Contact
     contactTitle: 'Contact Us',
     contactSubtitle: 'Ready to simplify your medical billing? Get in touch with us today.',
-    footerAddress: 'PMB 117 #35 Juan C. Borbón Suite 67, Guaynabo, PR 00969',
+    footerAddress: 'Las Villas B-15 Guaynabo, PR 00969',
     footerPhone: '(787) 223-9801',
     footerEmail: 'vj0042@outlook.com',
     footerFacebook: 'vjmedicalbillingllc',
@@ -184,7 +184,7 @@ export const translations: { en: Translations; es: Translations } = {
     // Contact
     contactTitle: 'Contáctenos',
     contactSubtitle: '¿Listo para simplificar su facturación médica? Póngase en contacto con nosotros hoy.',
-    footerAddress: 'PMB 117 #35 Juan C. Borbón Suite 67, Guaynabo, PR 00969',
+    footerAddress: 'Las Villas B-15 Guaynabo, PR 00969',
     footerPhone: '(787) 223-9801',
     footerEmail: 'vj0042@outlook.com',
     footerFacebook: 'vjmedicalbillingllc',

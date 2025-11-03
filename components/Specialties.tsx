@@ -1,20 +1,17 @@
 'use client'
 
-import React from 'react'
+import React, { useMemo } from 'react'
 import Image from 'next/image'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { 
   FaHeartbeat,
   FaBrain,
   FaEye,
-  FaLungs,
   FaStethoscope,
-  FaUserMd,
   FaHospital,
   FaProcedures,
   FaHandHoldingHeart,
   FaComments,
-  FaShoePrints,
   FaPlus
 } from 'react-icons/fa'
 
@@ -23,19 +20,27 @@ export function Specialties() {
 
   // Define specialties with icons in the specified order
   const specialties = [
-    { name: t('specialtyPodiatry'), icon: FaShoePrints },
-    { name: t('specialtyInternalMedicine'), icon: FaUserMd },
     { name: t('specialtyPsychiatry'), icon: FaBrain },
     { name: t('specialtyCardiology'), icon: FaHeartbeat },
     { name: t('specialtyGynecology'), icon: FaStethoscope },
     { name: t('specialtyOptometry'), icon: FaEye },
-    { name: t('specialtyPulmonology'), icon: FaLungs },
     { name: t('specialtyEmergency'), icon: FaHospital },
     { name: t('specialtySpeech'), icon: FaComments },
     { name: t('specialtyRheumatology'), icon: FaProcedures },
     { name: t('specialtyGeriatrics'), icon: FaHandHoldingHeart },
     { name: t('specialtyAndMore'), icon: FaPlus },
   ]
+
+  // Create a shuffled array of color indices (3 of each: 0=blue, 1=violet, 2=pink)
+  const colorIndices = useMemo(() => {
+    const colors = [0, 0, 0, 1, 1, 1, 2, 2, 2] // 3 of each color
+    // Fisher-Yates shuffle algorithm
+    for (let i = colors.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [colors[i], colors[j]] = [colors[j], colors[i]]
+    }
+    return colors
+  }, [])
 
   return (
     <section id="especialidades" className="py-16 md:py-24 relative overflow-hidden">
@@ -57,10 +62,10 @@ export function Specialties() {
           {t('specialtiesTitle')}
         </h2>
         
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-3 gap-6">
           {specialties.map((specialty, index) => {
             const Icon = specialty.icon
-            // Cycle through accent colors: blue, violet, or pink only
+            // Random color assignment (3 of each: blue, violet, pink)
             const colorClasses = [
               'text-accent-blue',
               'text-accent-violet',
@@ -71,7 +76,7 @@ export function Specialties() {
               'hover:border-accent-violet hover:bg-accent-violet',
               'hover:border-accent-pink hover:bg-accent-pink',
             ]
-            const colorIndex = index % colorClasses.length
+            const colorIndex = colorIndices[index]
             const iconColorClass = colorClasses[colorIndex]
             const hoverClass = hoverClasses[colorIndex]
             
